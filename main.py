@@ -1,9 +1,18 @@
 #!/usr/bin/env python
 
+import sys
 import curses
 import serial  # pip install pyserial
 
-s = serial.Serial('/dev/ttyUSB1', baudrate=19200)
+if len(sys.argv) != 2:
+    print("usage: {} serialdevice".format(sys.argv[0]))
+    exit(1)
+
+try:
+    s = serial.Serial(sys.argv[1], baudrate=19200)
+except serial.serialutil.SerialException as err:
+    print("Error while trying to open device {}: {}".format(sys.argv[1], err))
+    exit(1)
 scr = curses.initscr()
 curses.noecho()
 
